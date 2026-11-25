@@ -473,7 +473,7 @@ function IntroScreen({ onNext }: { onNext: () => void }) {
       <div className="text-center space-y-6">
         <div className="text-7xl animate-heartbeat">💌</div>
         <h1 className="text-2xl font-bold text-pink-600">
-          <Typewriter text="มีบางอย่างอยากบอก..." speed={60} />
+          <Typewriter text="อย่าพึ่งปิดนะ มีอะไรจะบอก..." speed={60} />
         </h1>
         <p className="text-gray-400 text-sm">กดปุ่มด้านล่างเพื่ออ่านนะ</p>
         <Btn onClick={onNext}>ลองกดปุ่มอ่านดูก่อนสิ 👀</Btn>
