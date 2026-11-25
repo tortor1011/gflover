@@ -168,6 +168,27 @@ body {
   animation: shakePop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+@keyframes floatPhoto {
+  0% {
+    transform: translateY(0) rotate(-4deg) scale(0.95);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.88;
+  }
+  85% {
+    opacity: 0.82;
+  }
+  100% {
+    transform: translateY(-115vh) rotate(12deg) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.animate-float-photo {
+  animation: floatPhoto linear infinite;
+}
+
 /* ===================== MOBILE EFFECTS ANIMATIONS ===================== */
 
 @keyframes rippleHeart {
@@ -206,4 +227,25 @@ body {
 
 .animate-shake-pop {
   animation: shakePop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes floatPhoto {
+  0% {
+    transform: translateY(0) rotate(-4deg) scale(0.95);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.88;
+  }
+  85% {
+    opacity: 0.82;
+  }
+  100% {
+    transform: translateY(-115vh) rotate(12deg) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.animate-float-photo {
+  animation: floatPhoto linear infinite;
 }

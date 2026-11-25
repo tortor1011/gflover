@@ -24,6 +24,13 @@ const PHOTOS: { src: string; alt: string }[] = [
 ];
 const VIDEO_SRC = "/videos/memory.mp4";
 
+// 📌 รูปที่จะลอยอยู่ในหัวใจช่วงหลังกดคืนดีแล้ว (เพิ่ม/เปลี่ยนรูปได้ตามใจเลย)
+const FLOATING_HEART_PHOTOS: string[] = [
+  "/photos/photo1.jpg",
+  "/photos/photo2.jpg",
+  "/photos/photo3.jpg",
+];
+
 // ==================== MINI GAME DATA (วางรูป 5 รูปไว้ใน /public/minigame/guess1.jpg - guess5.jpg) ====================
 const MINI_GAME_MAX_OPENS = 3; // เปิดได้แค่ 3 ช่องต่อรูป
 const MINI_GAME_TOTAL_TILES = 18; // บังไว้ทั้งหมด 18 ช่อง (6x3)
@@ -318,8 +325,93 @@ function PhotoSlot({ src, alt, index }: { src: string; alt: string; index: numbe
 }
 
 // ==================== FLOATING HEARTS ====================
-function FloatingHearts() {
+function HeartPhoto({ src, size }: { src: string; size: number }) {
+  const [imgFailed, setImgFailed] = useState(false);
+
+  return (
+    <div
+      style={{ width: size, height: size }}
+      className="relative drop-shadow-[0_6px_14px_rgba(244,114,182,0.35)]"
+    >
+      <svg viewBox="0 0 100 90" className="w-full h-full overflow-visible">
+        <defs>
+          <clipPath id="floating-heart-clip" clipPathUnits="objectBoundingBox">
+            <path d="M0.5,0.92 C0.5,0.92 0.04,0.62 0.04,0.31 C0.04,0.13 0.18,0.03 0.33,0.03 C0.42,0.03 0.48,0.09 0.5,0.16 C0.52,0.09 0.58,0.03 0.67,0.03 C0.82,0.03 0.96,0.13 0.96,0.31 C0.96,0.62 0.5,0.92 0.5,0.92 Z" />
+          </clipPath>
+        </defs>
+        <path
+          d="M50,83 C50,83 4,56 4,28 C4,12 18,3 33,3 C42,3 48,8 50,14 C52,8 58,3 67,3 C82,3 96,12 96,28 C96,56 50,83 50,83 Z"
+          fill="#fbcfe8"
+          stroke="#f9a8d4"
+          strokeWidth="3"
+        />
+      </svg>
+
+      {!imgFailed ? (
+        <img
+          src={src}
+          alt=""
+          onError={() => setImgFailed(true)}
+          style={{ clipPath: "url(#floating-heart-clip)" }}
+          className="absolute inset-[4%] w-[92%] h-[92%] object-cover"
+        />
+      ) : (
+        <span className="absolute inset-0 flex items-center justify-center text-2xl">
+          🩷
+        </span>
+      )}
+    </div>
+  );
+}
+
+function FloatingHearts({ withPhotos = false }: { withPhotos?: boolean }) {
   const items = ["🌸", "💕", "🩷", "🌸", "💕", "🩷", "🌸", "💕", "🩷", "🌸", "💕", "🩷"];
+
+  if (withPhotos && FLOATING_HEART_PHOTOS.length > 0) {
+    const photoSlots = Array.from({ length: 10 }, (_, i) => ({
+      src: FLOATING_HEART_PHOTOS[i % FLOATING_HEART_PHOTOS.length],
+      left: (i * 10.5 + 3) % 92,
+      size: 64 + (i % 3) * 14, // หัวใจดวงใหญ่ขึ้น (64px - 92px) เห็นรูปชัด
+      delay: i * 1.1,
+      duration: 9 + (i % 4) * 1.5,
+    }));
+
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {photoSlots.map((slot, i) => (
+          <div
+            key={`photo-heart-${i}`}
+            className="absolute select-none animate-float-photo"
+            style={{
+              left: `${slot.left}%`,
+              bottom: "-100px",
+              animationDelay: `${slot.delay}s`,
+              animationDuration: `${slot.duration}s`,
+            }}
+          >
+            <HeartPhoto src={slot.src} size={slot.size} />
+          </div>
+        ))}
+        {items.slice(0, 6).map((emoji, i) => (
+          <span
+            key={`emoji-${i}`}
+            className="absolute select-none animate-float"
+            style={{
+              left: `${(i * 17 + 7) % 95}%`,
+              bottom: "-40px",
+              animationDelay: `${i * 1.2}s`,
+              animationDuration: `${7 + (i % 3)}s`,
+              fontSize: `${22 + (i % 2) * 8}px`,
+              opacity: 0.45,
+            }}
+          >
+            {emoji}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
       {items.map((emoji, i) => (
@@ -392,7 +484,7 @@ function IntroScreen({ onNext }: { onNext: () => void }) {
 
 function Message1Screen({ onNext }: { onNext: () => void }) {
   const lines = [
-    "คิดถึงมากเลยนะ ไม่ได้คุยกันตั้งนาน ประมาณ 3 ปีแล้ว 😮‍💨",
+    "คิดถึงมากเลยนะ ไม่ได้คุยกันตั้งนาน ประมาณ 3 ปีแล้ว (3 อาทิตย์) 😮‍💨",
     "อ้วนเป็นยังไงบ้าง สบายดีมุ้ย อากาศหนาวนะ ห่มผ้าหนาๆ ด้วยนะ 🧣",
     "บ้านป๊าหนาวเป็นบางวัน แต่ส่วนใหญ่ก็ร้อนนิดๆ อยู่ 🌤️",
   ];
@@ -544,7 +636,7 @@ function YesScreen({
           <h2 className="text-2xl font-bold text-pink-600">
             <Typewriter text="ดีใจมากเลยนะอ้วน 🥹" speed={50} />
           </h2>
-          <p className="text-gray-400 text-sm">ความทรงจำดีๆ ที่เคยมีด้วยกัน 🩷</p>
+          <p className="text-gray-400 text-sm">ป๊าอยากคืนดีนะ ไอ้อ้วนของป๊า</p>
         </div>
 
         {/* Video */}
@@ -564,7 +656,7 @@ function YesScreen({
         {/* Post-reconciliation Thumbnail Cards */}
         <div className="pt-2 border-t border-pink-100 space-y-3">
           <p className="text-center text-pink-500 font-semibold text-sm">
-            มีอะไรให้เล่นต่ออีกนิดนึงนะ 💌
+            มีอะไรให้เล่นต่ออีกนิสนุง 💌
           </p>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -583,7 +675,7 @@ function YesScreen({
               className="group text-left rounded-2xl p-3.5 bg-gradient-to-br from-rose-50 to-fuchsia-100/70 border border-pink-200 hover:border-pink-400 hover:shadow-md transition-all active:scale-95"
             >
               <div className="text-3xl mb-1.5 group-hover:scale-110 transition-transform">📍</div>
-              <div className="font-bold text-pink-600 text-sm">เลือกเดตที่อยากไป</div>
+              <div className="font-bold text-pink-600 text-sm">เลือกเดตที่อยากทำ</div>
               <div className="text-[11px] text-gray-500 mt-0.5 leading-snug">
                 อยากทำอะไรดี ไม่รีบนะ 🤍
               </div>
@@ -680,7 +772,7 @@ function MiniGameScreen({
           </div>
           <div className="space-y-2.5 pt-1">
             <Btn onClick={onGoDatePicker} variant="primary">
-              ไปเลือกเดตที่อยากไปต่อ 📍
+              ไปเลือกเดตที่อยากทำต่อ 📍
             </Btn>
             <Btn onClick={handleReset} variant="secondary">
               เล่นใหม่อีกรอบ 🔄
@@ -937,7 +1029,7 @@ function DatePickerScreen({ onBack }: { onBack: () => void }) {
       <div className="space-y-4">
         <div className="text-center space-y-1">
           <div className="text-4xl">📍💕</div>
-          <h2 className="text-xl font-bold text-pink-600">เลือกเดตที่อยากไป</h2>
+          <h2 className="text-xl font-bold text-pink-600">เลือกเดตที่อยากทำ</h2>
           <p className="text-xs text-gray-400">
             จิ้มเลือกได้หลายอย่างเลยนะ หรือยังไม่รีบตอบก็ได้ 🤍
           </p>
@@ -1071,7 +1163,7 @@ function SureResponseScreen({ count, onReconsider, onMakeUp }: { count: number; 
           )}
         </div>
         <div className="space-y-3">
-          <Btn onClick={onReconsider} variant="primary">คิดดีแล้ว... ลองอีกที? 🤔</Btn>
+          <Btn onClick={onReconsider} variant="primary">คิดดีแล้ว 🤔</Btn>
           <Btn onClick={onMakeUp} variant="secondary">คืนดี 🩷</Btn>
         </div>
       </div>
@@ -1265,7 +1357,11 @@ export default function Home() {
       onTouchStart={handleTouch}
       onMouseDown={handleTouch}
     >
-      <FloatingHearts />
+      <FloatingHearts
+        withPhotos={
+          screen === "yes" || screen === "mini_game" || screen === "date_picker"
+        }
+      />
       <Confetti active={confetti} />
       <ShakeReveal />
 
