@@ -10,6 +10,8 @@ type Screen =
   | "message2"
   | "propose"
   | "yes"
+  | "mini_game"
+  | "date_picker"
   | "confirm_no"
   | "unsure_response"
   | "sure_response";
@@ -21,6 +23,90 @@ const PHOTOS: { src: string; alt: string }[] = [
   { src: "/photos/photo3.jpg", alt: "ความทรงจำที่ 3" },
 ];
 const VIDEO_SRC = "/videos/memory.mp4";
+
+// ==================== MINI GAME DATA (วางรูป 5 รูปไว้ใน /public/minigame/guess1.jpg - guess5.jpg) ====================
+const MINI_GAME_MAX_OPENS = 3; // เปิดได้แค่ 3 ช่องต่อรูป
+const MINI_GAME_TOTAL_TILES = 18; // บังไว้ทั้งหมด 18 ช่อง (6x3)
+
+interface MiniGameRound {
+  id: number;
+  image: string; // 📌 วางรูปตรงนี้
+  question: string;
+  options: string[];
+  correctIndex: number; // 0 = ข้อ 1, 1 = ข้อ 2, 2 = ข้อ 3, 3 = ข้อ 4
+  sweetNote: string;
+}
+
+const MINI_GAME_ROUNDS: MiniGameRound[] = [
+  {
+    id: 1,
+    image: "/minigame/guess1.jpg",
+    question: "รูปที่ 1: เปิดได้ 3 ช่อง! ที่นี่ที่ไหนเอ่ย? 📸",
+    options: ["ม.บูรพา", "เซ็นทรัลเวิล", "มอลบางกะปิ", "บึงพลาญชัย"],
+    correctIndex: 0,
+    sweetNote: "ดูปลาว่ายน้ำฟินๆ จนอยากบินไปหาเทอ🐟",
+  },
+  {
+    id: 2,
+    image: "/minigame/guess2.jpg",
+    question: "รูปที่ 2: เปิดได้ 3 ช่อง! จำได้ไหมตอนไหน? ✨",
+    options: ["ที่ๆคุณก็รู้", "ต้นตาล", "เกาะล้าน", "บางแสน"],
+    correctIndex: 2,
+    sweetNote: "เกาะล้านมีหมา แต่ในใจนี่หนา มีแต่เทอ",
+  },
+  {
+    id: 3,
+    image: "/minigame/guess3.jpg",
+    question: "รูปที่ 3: เปิดได้ 3 ช่อง! วันนี้เราไปทำอะไรกัน? 🥰",
+    options: ["เกษตรมอขอ", "ภูผาม่าน", "บ้านหนองเรือ", "หอโหวต"],
+    correctIndex: 0,
+    sweetNote: "ไปเดินงานเกษตรแล้วได้ของกินกลับมากินจนอ้วนจ้ำม่ำทั้งคู่ง่ะ",
+  },
+  {
+    id: 4,
+    image: "/minigame/guess4.jpg",
+    question: "รูปที่ 4: เปิดได้ 3 ช่อง! ลองทายดูซิ 🥺",
+    options: ["กรุงเทพ", "เกาะล้าน", "เซ็นทรัลเวิล", "สตรีศึกษา"],
+    correctIndex: 3,
+    sweetNote: "สมัยน่ารักๆทั้งคู่เยย 💖",
+  },
+  {
+    id: 5,
+    image: "/minigame/guess5.jpg",
+    question: "รูปที่ 5 (รูปสุดท้าย): เปิดได้ 3 ช่อง! ทายถูกป่าว? 🥹",
+    options: ["ร้านคิงคอง", "ร้าน Size L", "ร้านแสนเสน์หา", "ร้านประกายจ้าในตาเทอ"],
+    correctIndex: 1,
+    sweetNote: "เกี๊ยว Size L ที่อ้วนชอบ อิอิ ",
+  },
+];
+
+// ==================== DATE PICKER DATA (วางรูปสถานที่ไว้ใน /public/dates/) ====================
+interface DateIdea {
+  id: string;
+  label: string;
+  emoji: string;
+  image: string;
+}
+
+const DATE_IDEAS: DateIdea[] = [
+  { id: "shabu", label: "ชาบู", emoji: "🍲", image: "/dates/shabu.jpg" },
+  { id: "mookrata", label: "หมูกระทะ", emoji: "🥓", image: "/dates/mookrata.jpg" },
+  { id: "rice", label: "ข้าว", emoji: "🍚", image: "/dates/rice.jpg" },
+  { id: "noodle", label: "ก๋วยเตี๋ยว", emoji: "🍜", image: "/dates/noodle.jpg" },
+  { id: "steak", label: "สเต๊ก", emoji: "🥩", image: "/dates/steak.jpg" },
+  { id: "icecream", label: "ไอติม", emoji: "🍦", image: "/dates/icecream.jpg" },
+  { id: "movie", label: "ดูหนัง", emoji: "🎬", image: "/dates/movie.jpg" },
+  { id: "series", label: "ดูซีรีส์", emoji: "📺", image: "/dates/series.jpg" },
+  { id: "game", label: "เล่นเกม", emoji: "🎮", image: "/dates/game.jpg" },
+  { id: "anime", label: "ดูอนิเมะ", emoji: "✨", image: "/dates/anime.jpg" },
+  { id: "hug", label: "กอด", emoji: "🫂", image: "/dates/hug.jpg" },
+  { id: "cheek_kiss", label: "หอมแก้ม", emoji: "😘", image: "/dates/cheek_kiss.jpg" },
+  { id: "kiss", label: "จุ๊บ", emoji: "💋", image: "/dates/kiss.jpg" },
+  { id: "travel", label: "เที่ยว", emoji: "✈️", image: "/dates/travel.jpg" },
+  { id: "photo", label: "ถ่ายรูป", emoji: "📸", image: "/dates/photo.jpg" },
+  { id: "swim", label: "ว่ายน้ำ", emoji: "🏊", image: "/dates/swim.jpg" },
+  { id: "workout", label: "ออกกำลังกาย", emoji: "🏃", image: "/dates/workout.jpg" },
+];
 
 // ==================== CONFETTI ====================
 interface Particle {
@@ -144,77 +230,43 @@ function Typewriter({ text, speed = 40, className = "" }: { text: string; speed?
 }
 
 // ==================== RUNAWAY BUTTON ====================
-const MAX_MOBILE_JUMPS = 3;
-
 function RunawayBtn({ children, onCaught }: { children: React.ReactNode; onCaught?: () => void }) {
-  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
-  const [jumpCount, setJumpCount] = useState(0);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [escaped, setEscaped] = useState(0);
   const btnRef = useRef<HTMLButtonElement>(null);
-  const areaRef = useRef<HTMLDivElement>(null);
 
   const flee = useCallback(() => {
+    if (!btnRef.current) return;
     const btn = btnRef.current;
-    const area = areaRef.current;
-    if (!btn || !area) return;
+    const rect = btn.getBoundingClientRect();
+    const parentRect = btn.closest(".runaway-container")?.getBoundingClientRect();
+    if (!parentRect) return;
 
-    const aW = area.clientWidth;
-    const aH = area.clientHeight;
-    const bW = btn.offsetWidth || 220;
-    const bH = btn.offsetHeight || 48;
+    const maxX = parentRect.width - rect.width;
+    const maxY = parentRect.height - rect.height;
 
-    setPos({
-      x: Math.random() * Math.max(0, aW - bW),
-      y: Math.random() * Math.max(0, aH - bH),
-    });
-    setJumpCount((c) => c + 1);
+    const newX = Math.random() * maxX - rect.left + parentRect.left;
+    const newY = Math.random() * maxY - rect.top + parentRect.top;
+
+    setPos({ x: Math.max(-rect.left + parentRect.left, Math.min(maxX - rect.left + parentRect.left, newX)), y: Math.max(-rect.top + parentRect.top, Math.min(maxY - rect.top + parentRect.top, newY)) });
+    setEscaped((e) => e + 1);
   }, []);
 
-  const label =
-    jumpCount >= MAX_MOBILE_JUMPS
-      ? "โอเค... ไม่เอาจริงๆ 😮‍💨"
-      : jumpCount >= 2
-        ? "จับไม่ได้หรอก! 😂"
-        : jumpCount >= 1
-          ? "หนีแล้ว! 🏃💨"
-          : children;
-
   return (
-    <div ref={areaRef} className="relative w-full" style={{ height: "80px" }}>
-      <button
-        ref={btnRef}
-        // Desktop: วิ่งเมื่อ hover (ไม่จำกัด)
-        onMouseEnter={flee}
-        // Mobile: วิ่งสูงสุด 3 ครั้ง ครั้งที่ 4 ผ่านไป onCaught
-        onTouchStart={(e) => {
-          if (jumpCount < MAX_MOBILE_JUMPS) {
-            e.preventDefault(); // บล็อก click ไว้ก่อน
-            flee();
-          }
-          // ถ้า jumpCount >= MAX_MOBILE_JUMPS → ไม่ preventDefault → click ยิง
-        }}
-        onClick={onCaught}
-        className="btn btn-danger"
-        style={
-          pos
-            ? {
-              position: "absolute",
-              left: pos.x,
-              top: pos.y,
-              transition: "left 0.18s ease, top 0.18s ease",
-              whiteSpace: "nowrap",
-            }
-            : {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: "50%",
-              transform: "translateY(-50%)",
-            }
-        }
-      >
-        {label}
-      </button>
-    </div>
+    <button
+      ref={btnRef}
+      onMouseEnter={flee}
+      onFocus={flee}
+      onClick={onCaught}
+      className="btn btn-danger transition-all duration-200"
+      style={{
+        position: "relative",
+        transform: `translate(${pos.x}px, ${pos.y}px)`,
+        transition: "transform 0.15s ease",
+      }}
+    >
+      {escaped > 3 ? "จับไม่ได้หรอก! 😂" : escaped > 1 ? "หนีแล้ว! 🏃💨" : children}
+    </button>
   );
 }
 
@@ -433,7 +485,7 @@ function ProposeScreen({ onYes, onNo }: { onYes: () => void; onNo: () => void })
           <Typewriter text="ง้อนะอ้วน" speed={80} />
         </h2>
         <p className="text-gray-600 text-lg">คืนดีกันเถอะ 💕</p>
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-2 runaway-container relative" style={{ minHeight: "120px" }}>
           <Btn onClick={onYes} variant="primary">ได้ 🩷</Btn>
           <RunawayBtn onCaught={onNo}>ไม่...ไม่มีทางหรอก ฝันไปเถอะ 😤</RunawayBtn>
         </div>
@@ -442,7 +494,48 @@ function ProposeScreen({ onYes, onNo }: { onYes: () => void; onNo: () => void })
   );
 }
 
-function YesScreen() {
+function MediaThumb({
+  src,
+  alt,
+  emoji,
+  className = "aspect-square",
+}: {
+  src?: string;
+  alt: string;
+  emoji: string;
+  className?: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  return (
+    <div className={`relative rounded-xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100 border border-pink-100 ${className}`}>
+      {(!src || !loaded || error) && (
+        <div className="absolute inset-0 flex items-center justify-center text-3xl select-none">
+          {emoji}
+        </div>
+      )}
+      {src && !error && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+        />
+      )}
+    </div>
+  );
+}
+
+function YesScreen({
+  onOpenMiniGame,
+  onOpenDatePicker,
+}: {
+  onOpenMiniGame: () => void;
+  onOpenDatePicker: () => void;
+}) {
   return (
     <Card>
       <div className="space-y-6">
@@ -468,9 +561,454 @@ function YesScreen() {
           ))}
         </div>
 
+        {/* Post-reconciliation Thumbnail Cards */}
+        <div className="pt-2 border-t border-pink-100 space-y-3">
+          <p className="text-center text-pink-500 font-semibold text-sm">
+            มีอะไรให้เล่นต่ออีกนิดนึงนะ 💌
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={onOpenMiniGame}
+              className="group text-left rounded-2xl p-3.5 bg-gradient-to-br from-pink-50 to-rose-100/80 border border-pink-200 hover:border-pink-400 hover:shadow-md transition-all active:scale-95"
+            >
+              <div className="text-3xl mb-1.5 group-hover:scale-110 transition-transform">🎮</div>
+              <div className="font-bold text-pink-600 text-sm">มินิเกมคู่รัก</div>
+              <div className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                ทายความทรงจำของเรา
+              </div>
+            </button>
+
+            <button
+              onClick={onOpenDatePicker}
+              className="group text-left rounded-2xl p-3.5 bg-gradient-to-br from-rose-50 to-fuchsia-100/70 border border-pink-200 hover:border-pink-400 hover:shadow-md transition-all active:scale-95"
+            >
+              <div className="text-3xl mb-1.5 group-hover:scale-110 transition-transform">📍</div>
+              <div className="font-bold text-pink-600 text-sm">เลือกเดตที่อยากไป</div>
+              <div className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                อยากทำอะไรดี ไม่รีบนะ 🤍
+              </div>
+            </button>
+          </div>
+        </div>
+
         <p className="text-center text-pink-400 text-sm animate-pulse">
           ขอบคุณที่ให้โอกาสป๊านะ 🌸
         </p>
+      </div>
+    </Card>
+  );
+}
+
+function MiniGameScreen({
+  onBack,
+  onGoDatePicker,
+}: {
+  onBack: () => void;
+  onGoDatePicker: () => void;
+}) {
+  const [roundIdx, setRoundIdx] = useState(0);
+  const [openedTiles, setOpenedTiles] = useState<number[]>([]);
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+  const [revealAll, setRevealAll] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const [score, setScore] = useState(0);
+  const [finished, setFinished] = useState(false);
+
+  const current = MINI_GAME_ROUNDS[roundIdx];
+  const remaining = MINI_GAME_MAX_OPENS - openedTiles.length;
+  const answered = selectedChoice !== null;
+  const isCorrect = selectedChoice === current.correctIndex;
+
+  const handleOpenTile = (id: number) => {
+    if (openedTiles.includes(id)) return;
+    if (openedTiles.length >= MINI_GAME_MAX_OPENS && !revealAll) return;
+    hapticLight();
+    setOpenedTiles((prev) => [...prev, id]);
+  };
+
+  const handleSelectChoice = (idx: number) => {
+    if (answered) return;
+    setSelectedChoice(idx);
+    if (idx === current.correctIndex) {
+      setScore((s) => s + 1);
+      hapticHeartbeat();
+    } else {
+      hapticLight();
+    }
+  };
+
+  const handleNextRound = () => {
+    hapticLight();
+    if (roundIdx + 1 < MINI_GAME_ROUNDS.length) {
+      setRoundIdx((r) => r + 1);
+      setOpenedTiles([]);
+      setSelectedChoice(null);
+      setRevealAll(false);
+      setImgError(false);
+    } else {
+      setFinished(true);
+      hapticHeartbeat();
+    }
+  };
+
+  const handleReset = () => {
+    hapticLight();
+    setRoundIdx(0);
+    setOpenedTiles([]);
+    setSelectedChoice(null);
+    setRevealAll(false);
+    setImgError(false);
+    setScore(0);
+    setFinished(false);
+  };
+
+  if (finished) {
+    return (
+      <Card>
+        <div className="text-center space-y-5">
+          <div className="text-6xl animate-heartbeat">🥹🩷</div>
+          <h2 className="text-2xl font-bold text-pink-600">
+            ทายถูก {score} / {MINI_GAME_ROUNDS.length} รูป!
+          </h2>
+          <div className="bubble text-gray-700 text-sm leading-relaxed space-y-2">
+            <p>
+              ไม่ว่าจะจำได้กี่รูป ความทรงจำทุกช่วงเวลาที่มีอ้วนอยู่ด้วยก็ดีที่สุดสำหรับป๊าเสมอนะ 🌸
+            </p>
+            <p className="text-pink-500 font-medium">
+              ต่อจากนี้เรามาถ่ายรูปสร้างความทรงจำใหม่ๆ ด้วยกันอีกเยอะๆ เลยนะ 💕
+            </p>
+          </div>
+          <div className="space-y-2.5 pt-1">
+            <Btn onClick={onGoDatePicker} variant="primary">
+              ไปเลือกเดตที่อยากไปต่อ 📍
+            </Btn>
+            <Btn onClick={handleReset} variant="secondary">
+              เล่นใหม่อีกรอบ 🔄
+            </Btn>
+            <button
+              onClick={onBack}
+              className="w-full text-center text-xs text-gray-400 hover:text-pink-500 pt-1"
+            >
+              ← กลับหน้าความทรงจำ
+            </button>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <div className="space-y-4">
+        {/* Header */}
+        <div className="flex items-center justify-between text-xs font-semibold">
+          <span className="text-pink-500">
+            🎮 รูปที่ {roundIdx + 1} / {MINI_GAME_ROUNDS.length}
+          </span>
+          <span
+            className={`px-2.5 py-0.5 rounded-full ${remaining > 0
+              ? "bg-pink-100 text-pink-600"
+              : "bg-rose-100 text-rose-500"
+              }`}
+          >
+            เปิดแล้ว {openedTiles.length} / {MINI_GAME_MAX_OPENS} ช่อง
+          </span>
+        </div>
+
+        {/* Single Image covered by 18-tile grid (6x3) — fits natural aspect ratio */}
+        <div className="flex justify-center">
+          <div className="relative w-fit max-w-full rounded-2xl overflow-hidden border-2 border-pink-200 bg-gradient-to-br from-pink-50 to-rose-100 select-none">
+            {/* Underlying single photo */}
+            {!imgError ? (
+              <Image
+                key={current.image}
+                src={current.image}
+                alt={`รูปทายความทรงจำที่ ${current.id}`}
+                width={1000}
+                height={1000}
+                className="block w-auto h-auto max-w-full max-h-[52vh]"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="w-[300px] sm:w-[380px] h-52 flex flex-col items-center justify-center text-pink-400 text-xs text-center px-4">
+                <span className="text-4xl mb-1">🖼️</span>
+                <span>วางรูปที่ {current.id} ไว้ที่</span>
+                <code className="text-[11px] bg-white/70 px-2 py-0.5 rounded mt-1">
+                  /public{current.image}
+                </code>
+              </div>
+            )}
+
+            {/* 18-tile cover overlay (6 cols x 3 rows) */}
+            <div className="absolute inset-0 grid grid-cols-6 grid-rows-3">
+              {Array.from({ length: MINI_GAME_TOTAL_TILES }, (_, i) => i + 1).map((id) => {
+                const isOpen = revealAll || openedTiles.includes(id);
+                const canOpen = !isOpen && remaining > 0;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => handleOpenTile(id)}
+                    disabled={!canOpen}
+                    aria-label={`เปิดช่องที่ ${id}`}
+                    className={`flex items-center justify-center transition-opacity duration-300 border border-white/60 ${isOpen
+                      ? "opacity-0 pointer-events-none bg-pink-300"
+                      : canOpen
+                        ? "opacity-100 bg-pink-300 hover:bg-pink-400 text-white active:scale-95 cursor-pointer"
+                        : "opacity-100 bg-pink-200 text-white/90 cursor-not-allowed"
+                      }`}
+                  >
+                    <span className="text-xs font-bold drop-shadow-sm">
+                      {canOpen ? id : "🔒"}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <p className="text-center text-xs text-gray-500">
+          {remaining > 0
+            ? `แตะเปิดช่องได้อีก ${remaining} ช่อง เพื่อแอบดูรูปด้านล่าง 👆`
+            : "เปิดครบ 3 ช่องแล้ว! ลองทายคำตอบด้านล่างดูเลย 💕"}
+        </p>
+
+        {/* Question & Choices */}
+        <div className="pt-2 border-t border-pink-100 space-y-2.5">
+          <h3 className="text-sm font-bold text-pink-600 text-center">
+            {current.question}
+          </h3>
+
+          <div className="space-y-2">
+            {
+              current.options.map((opt, idx) => {
+                const isPicked = selectedChoice === idx;
+                const isAnswer = idx === current.correctIndex;
+                let style =
+                  "bg-white border-pink-200 text-gray-700 hover:bg-pink-50";
+                if (answered) {
+                  if (isAnswer) {
+                    style = "bg-pink-100 border-pink-400 text-pink-700 font-semibold";
+                  } else if (isPicked) {
+                    style = "bg-gray-100 border-gray-300 text-gray-400";
+                  } else {
+                    style = "bg-white/60 border-pink-100 text-gray-400";
+                  }
+                }
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleSelectChoice(idx)}
+                    disabled={answered}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl border-2 text-sm transition-all ${style}`}
+                  >
+                    {opt}
+                    {answered && isAnswer && " ✓"}
+                  </button>
+                );
+              })
+            }
+          </div>
+        </div>
+
+        {/* Result & Next Round */}
+        {answered && (
+          <div className="bubble text-center space-y-3 animate-slideIn">
+            <div className="text-3xl">{isCorrect ? "🥹" : "🫣"}</div>
+            <div className="font-bold text-pink-600 text-base">
+              {isCorrect ? "เก่งมาก" : "เกือบถูกแล้วนะอ้วน~ "}
+            </div>
+            <p className="text-xs text-gray-600 leading-relaxed">{current.sweetNote}</p>
+
+            <div className="space-y-2 pt-1">
+              {!revealAll && (
+                <Btn onClick={() => setRevealAll(true)} variant="secondary">
+                  เปิดดูรูปเต็มๆ 👀
+                </Btn>
+              )}
+              <Btn onClick={handleNextRound} variant="primary">
+                {roundIdx + 1 < MINI_GAME_ROUNDS.length
+                  ? `ไปรูปถัดไป (${roundIdx + 2}/${MINI_GAME_ROUNDS.length}) →`
+                  : "ดูสรุปคะแนน 🩷"}
+              </Btn>
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={onBack}
+          className="w-full text-center text-xs text-gray-400 hover:text-pink-500 pt-1"
+        >
+          ← กลับหน้าความทรงจำ
+        </button>
+      </div>
+    </Card>
+  );
+}
+
+function DatePickerScreen({ onBack }: { onBack: () => void }) {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [status, setStatus] = useState<"picking" | "confirmed" | "later">("picking");
+
+  const toggle = (id: string) => {
+    hapticLight();
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const selectedIdeas = DATE_IDEAS.filter((d) => selectedIds.includes(d.id));
+
+  if (status === "confirmed") {
+    return (
+      <Card>
+        <div className="space-y-5 text-center">
+          <div className="text-5xl animate-bounce">🥰</div>
+          <h2 className="text-xl font-bold text-pink-600">
+            ป๊าจดไว้ให้หมดแล้วนะ! 📝💕
+          </h2>
+          <p className="text-xs text-gray-500">
+            สิ่งที่อ้วนอยากทำด้วยกัน ({selectedIdeas.length} อย่าง)
+          </p>
+
+          <div className="grid grid-cols-3 gap-2 max-h-72 overflow-y-auto pr-1">
+            {selectedIdeas.map((idea) => (
+              <div
+                key={idea.id}
+                className="rounded-xl p-1.5 bg-pink-50 border border-pink-200 space-y-1"
+              >
+                <MediaThumb
+                  src={idea.image}
+                  alt={idea.label}
+                  emoji={idea.emoji}
+                  className="aspect-square"
+                />
+                <div className="text-xs font-semibold text-pink-600 truncate">
+                  {idea.emoji} {idea.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bubble text-sm text-gray-700 leading-relaxed">
+            พร้อมเมื่อไหร่บอกป๊าได้เลยนะ เดี๋ยวพาไปทำตามใจทุกอย่างเลย 🩷
+          </div>
+
+          <div className="space-y-2">
+            <Btn onClick={() => setStatus("picking")} variant="secondary">
+              เลือกเพิ่ม / แก้ไข ✏️
+            </Btn>
+            <Btn onClick={onBack} variant="primary">
+              ← กลับหน้าความทรงจำ
+            </Btn>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (status === "later") {
+    return (
+      <Card>
+        <div className="space-y-5 text-center">
+          <div className="text-5xl animate-heartbeat">🤍</div>
+          <h2 className="text-xl font-bold text-pink-600">
+            ไม่รีบเลยนะ ค่อยๆ คิดก็ได้ 🌸
+          </h2>
+          <div className="bubble text-sm text-gray-600 leading-relaxed space-y-2">
+            <p>อยากไปไหนหรืออยากทำอะไรเมื่อไหร่</p>
+            <p>ทักมาบอกป๊าได้ตลอดเลยนะ ป๊ารอตามใจอ้วนเสมอ 💕</p>
+          </div>
+          <div className="space-y-2">
+            <Btn onClick={() => setStatus("picking")} variant="secondary">
+              กลับไปดูตัวเลือกอีกครั้ง
+            </Btn>
+            <Btn onClick={onBack} variant="primary">
+              ← กลับหน้าความทรงจำ
+            </Btn>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <div className="space-y-4">
+        <div className="text-center space-y-1">
+          <div className="text-4xl">📍💕</div>
+          <h2 className="text-xl font-bold text-pink-600">เลือกเดตที่อยากไป</h2>
+          <p className="text-xs text-gray-400">
+            จิ้มเลือกได้หลายอย่างเลยนะ หรือยังไม่รีบตอบก็ได้ 🤍
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 max-h-[340px] overflow-y-auto pr-1 py-1">
+          {DATE_IDEAS.map((idea) => {
+            const active = selectedIds.includes(idea.id);
+            return (
+              <button
+                key={idea.id}
+                onClick={() => toggle(idea.id)}
+                className={`relative rounded-xl p-1.5 border-2 transition-all active:scale-95 text-center ${active
+                  ? "border-pink-400 bg-pink-50 shadow-sm"
+                  : "border-pink-100 bg-white/80 hover:border-pink-200"
+                  }`}
+              >
+                {active && (
+                  <span className="absolute -top-1.5 -right-1.5 z-10 w-5 h-5 rounded-full bg-pink-500 text-white text-[10px] flex items-center justify-center shadow">
+                    ✓
+                  </span>
+                )}
+                <MediaThumb
+                  src={idea.image}
+                  alt={idea.label}
+                  emoji={idea.emoji}
+                  className="aspect-square mb-1"
+                />
+                <div className="text-[11px] font-semibold text-gray-700 truncate">
+                  {idea.label}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-2 pt-1">
+          <button
+            onClick={() => {
+              if (selectedIds.length === 0) return;
+              hapticHeartbeat();
+              setStatus("confirmed");
+            }}
+            disabled={selectedIds.length === 0}
+            className={`btn ${selectedIds.length > 0
+              ? "btn-primary"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
+          >
+            {selectedIds.length > 0
+              ? `เลือก ${selectedIds.length} อย่างนี้เลย 💕`
+              : "จิ้มเลือกสิ่งที่อยากทำก่อนนะ 👆"}
+          </button>
+
+          <Btn
+            onClick={() => {
+              hapticLight();
+              setStatus("later");
+            }}
+            variant="secondary"
+          >
+            ยังไม่รีบเลือกก็ได้ ค่อยบอกทีหลัง 🤍
+          </Btn>
+
+          <button
+            onClick={onBack}
+            className="w-full text-center text-xs text-gray-400 hover:text-pink-500 pt-1"
+          >
+            ← กลับหน้าความทรงจำ
+          </button>
+        </div>
       </div>
     </Card>
   );
@@ -541,6 +1079,147 @@ function SureResponseScreen({ count, onReconsider, onMakeUp }: { count: number; 
   );
 }
 
+// ==================== TOUCH RIPPLE HEARTS ====================
+interface RippleHeart {
+  id: number;
+  x: number;
+  y: number;
+}
+
+function TouchRippleHearts() {
+  const [hearts, setHearts] = useState<RippleHeart[]>([]);
+
+  const handleTouch = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    // ignore clicks on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("video") || target.closest("a")) return;
+
+    const point = "touches" in e ? e.touches[0] : e;
+    const x = point.clientX;
+    const y = point.clientY;
+    const id = Date.now() + Math.random();
+
+    setHearts((prev) => [...prev, { id, x, y }]);
+    setTimeout(() => setHearts((prev) => prev.filter((h) => h.id !== id)), 1200);
+  }, []);
+
+  const emojis = ["💕", "🩷", "💗", "💓", "🌸", "💖"];
+
+  return (
+    <>
+      {/* invisible overlay to capture touches without blocking UI */}
+      <div
+        className="fixed inset-0 z-20 pointer-events-none"
+        onTouchStart={handleTouch}
+        onMouseDown={handleTouch}
+        style={{ pointerEvents: "none" }}
+      />
+      {hearts.map((h) => (
+        <span
+          key={h.id}
+          className="fixed pointer-events-none select-none animate-ripple-heart z-30"
+          style={{ left: h.x - 12, top: h.y - 12, fontSize: "24px" }}
+        >
+          {emojis[Math.floor(Math.random() * emojis.length)]}
+        </span>
+      ))}
+    </>
+  );
+}
+
+// ==================== SHAKE TO REVEAL ====================
+const SHAKE_MESSAGES = [
+  { emoji: "😏", text: "ป๊าก็รู้ว่าอยากคืนดี~" },
+  { emoji: "🥹", text: "ชอบนะที่เขย่าโทรศัพท์ 555" },
+  { emoji: "💕", text: "ป๊ารอนะ ไม่ไปไหนหรอก" },
+  { emoji: "🌸", text: "เขย่าอีกได้นะ ป๊าไม่เบื่อ" },
+];
+
+function ShakeReveal() {
+  const [show, setShow] = useState(false);
+  const [msgIdx, setMsgIdx] = useState(0);
+  const lastShake = useRef(0);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
+  const lastZ = useRef(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleMotion = (e: DeviceMotionEvent) => {
+      const acc = e.accelerationIncludingGravity;
+      if (!acc) return;
+      const { x = 0, y = 0, z = 0 } = acc;
+
+      const dx = Math.abs((x ?? 0) - lastX.current);
+      const dy = Math.abs((y ?? 0) - lastY.current);
+      const dz = Math.abs((z ?? 0) - lastZ.current);
+      lastX.current = x ?? 0;
+      lastY.current = y ?? 0;
+      lastZ.current = z ?? 0;
+
+      const totalForce = dx + dy + dz;
+      const now = Date.now();
+
+      if (totalForce > 30 && now - lastShake.current > 1500) {
+        lastShake.current = now;
+        setMsgIdx((i) => (i + 1) % SHAKE_MESSAGES.length);
+        setShow(true);
+        // haptic
+        if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+        setTimeout(() => setShow(false), 2500);
+      }
+    };
+
+    // iOS 13+ requires permission
+    const requestAndListen = async () => {
+      if (
+        typeof DeviceMotionEvent !== "undefined" &&
+        // @ts-expect-error iOS non-standard
+        typeof DeviceMotionEvent.requestPermission === "function"
+      ) {
+        try {
+          // @ts-expect-error iOS non-standard
+          const perm = await DeviceMotionEvent.requestPermission();
+          if (perm === "granted") {
+            window.addEventListener("devicemotion", handleMotion);
+          }
+        } catch {
+          // silently fail on desktop
+        }
+      } else {
+        window.addEventListener("devicemotion", handleMotion);
+      }
+    };
+
+    requestAndListen();
+    return () => window.removeEventListener("devicemotion", handleMotion);
+  }, []);
+
+  if (!show) return null;
+  const msg = SHAKE_MESSAGES[msgIdx];
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+      <div className="bg-white/90 backdrop-blur-md border border-pink-200 rounded-3xl px-8 py-6 shadow-2xl text-center animate-shake-pop mx-6">
+        <div className="text-5xl mb-2">{msg.emoji}</div>
+        <p className="text-pink-600 font-semibold text-lg">{msg.text}</p>
+      </div>
+    </div>
+  );
+}
+
+// ==================== HAPTIC HELPERS ====================
+function hapticHeartbeat() {
+  if (!navigator.vibrate) return;
+  // thump-thump pattern like a heartbeat ♥
+  navigator.vibrate([120, 80, 120, 300, 120, 80, 120]);
+}
+
+function hapticLight() {
+  if (!navigator.vibrate) return;
+  navigator.vibrate(40);
+}
+
 // ==================== MAIN PAGE ====================
 
 export default function Home() {
@@ -548,13 +1227,30 @@ export default function Home() {
   const [sureCount, setSureCount] = useState(0);
   const [confetti, setConfetti] = useState(false);
   const [screenKey, setScreenKey] = useState(0);
+  // touch ripple — capture at root level
+  const [hearts, setHearts] = useState<RippleHeart[]>([]);
+  const emojis = ["💕", "🩷", "💗", "💓", "🌸", "💖"];
+
+  const handleTouch = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("button") || target.closest("video") || target.closest("a")) return;
+    const point = "touches" in e ? e.touches[0] : (e as React.MouseEvent);
+    if (!point) return;
+    const x = point.clientX;
+    const y = point.clientY;
+    const id = Date.now() + Math.random();
+    setHearts((prev) => [...prev, { id, x, y }]);
+    setTimeout(() => setHearts((prev) => prev.filter((h) => h.id !== id)), 1200);
+  }, []);
 
   const go = useCallback((s: Screen) => {
+    hapticLight();
     setScreen(s);
     setScreenKey((k) => k + 1);
     if (s === "yes") {
       setConfetti(false);
       setTimeout(() => setConfetti(true), 50);
+      hapticHeartbeat();
     }
   }, []);
 
@@ -564,9 +1260,25 @@ export default function Home() {
   }, [go]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-pink-100 via-rose-50 to-fuchsia-100 flex items-center justify-center p-4 relative">
+    <main
+      className="min-h-screen bg-gradient-to-br from-pink-100 via-rose-50 to-fuchsia-100 flex items-center justify-center p-4 relative select-none"
+      onTouchStart={handleTouch}
+      onMouseDown={handleTouch}
+    >
       <FloatingHearts />
       <Confetti active={confetti} />
+      <ShakeReveal />
+
+      {/* Touch ripple hearts rendered at root so they appear over everything */}
+      {hearts.map((h) => (
+        <span
+          key={h.id}
+          className="fixed pointer-events-none select-none animate-ripple-heart z-40"
+          style={{ left: h.x - 12, top: h.y - 12, fontSize: "24px" }}
+        >
+          {emojis[Math.floor(h.id * 9301 + 49297) % emojis.length]}
+        </span>
+      ))}
 
       {sureCount > 0 && screen === "confirm_no" && (
         <div className="fixed top-4 right-4 z-50 bg-pink-200 text-pink-700 text-xs px-3 py-1 rounded-full shadow animate-slideIn">
@@ -579,7 +1291,19 @@ export default function Home() {
         {screen === "message1" && <Message1Screen onNext={() => go("message2")} />}
         {screen === "message2" && <Message2Screen onNext={() => go("propose")} />}
         {screen === "propose" && <ProposeScreen onYes={() => go("yes")} onNo={() => go("confirm_no")} />}
-        {screen === "yes" && <YesScreen />}
+        {screen === "yes" && (
+          <YesScreen
+            onOpenMiniGame={() => go("mini_game")}
+            onOpenDatePicker={() => go("date_picker")}
+          />
+        )}
+        {screen === "mini_game" && (
+          <MiniGameScreen
+            onBack={() => go("yes")}
+            onGoDatePicker={() => go("date_picker")}
+          />
+        )}
+        {screen === "date_picker" && <DatePickerScreen onBack={() => go("yes")} />}
         {screen === "confirm_no" && (
           <ConfirmNoScreen onUnsure={() => go("unsure_response")} onSure={() => go("sure_response")} />
         )}

@@ -3,229 +3,207 @@
 
 /* ===================== FONTS ===================== */
 
-  /* ===================== BASE ===================== */
-  body {
-    font-family: "Sarabun", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+/* ===================== BASE ===================== */
+body {
+  font-family: "Sarabun", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
 
-    /* ===================== CARD ===================== */
-    .card-glass {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 182, 193, 0.35);
-      box-shadow:
-        0 8px 32px rgba(236, 72, 153, 0.12),
-        0 2px 8px rgba(0, 0, 0, 0.06);
-      padding: 2rem;
-    }
+/* ===================== CARD ===================== */
+.card-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 182, 193, 0.35);
+  box-shadow:
+    0 8px 32px rgba(236, 72, 153, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
 
 
-        /* ===================== BUBBLE ===================== */
-        .bubble {
-          background: linear-gradient(135deg, #fff0f5 0%, #fce7f3 100%);
-          border-radius: 1.25rem;
-          padding: 1.25rem 1.5rem;
-          border: 1px solid rgba(251, 182, 206, 0.4);
-        }
+/* ===================== BUBBLE ===================== */
+.bubble {
+  background: linear-gradient(135deg, #fff0f5 0%, #fce7f3 100%);
+  border-radius: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(251, 182, 206, 0.4);
+}
 
-        /* ===================== BUTTONS ===================== */
-        .btn {
-          display: block;
-          width: 100%;
-          padding: 0.85rem 1.5rem;
-          border-radius: 1.25rem;
-          font-weight: 600;
-          font-size: 0.95rem;
-          font-family: "Sarabun", sans-serif;
-          transition: all 0.18s ease;
-          cursor: pointer;
-          border: none;
-          outline: none;
-        }
+/* ===================== BUTTONS ===================== */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  border-radius: 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: "Sarabun", sans-serif;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
 
-        .btn:active {
-          transform: scale(0.97);
-        }
+.btn:active {
+  transform: scale(0.97);
+}
 
-        .btn-primary {
-          background: linear-gradient(135deg, #f9a8d4 0%, #fb7185 100%);
-          color: white;
-          box-shadow: 0 4px 14px rgba(249, 168, 212, 0.5);
-        }
+.btn-primary {
+  background: linear-gradient(135deg, #f9a8d4 0%, #fb7185 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(249, 168, 212, 0.5);
+}
 
-        .btn-primary:hover {
-          background: linear-gradient(135deg, #f472b6 0%, #f43f5e 100%);
-          box-shadow: 0 6px 18px rgba(249, 168, 212, 0.65);
-          transform: translateY(-1px);
-        }
+.btn-primary:hover {
+  background: linear-gradient(135deg, #f472b6 0%, #f43f5e 100%);
+  box-shadow: 0 6px 18px rgba(249, 168, 212, 0.65);
+  transform: translateY(-1px);
+}
 
-        .btn-secondary {
-          background: white;
-          color: #ec4899;
-          border: 2px solid #fbcfe8;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+.btn-secondary {
+  background: white;
+  color: #ec4899;
+  border: 2px solid #fbcfe8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
 
-        .btn-secondary:hover {
-          background: #fdf2f8;
-          border-color: #f9a8d4;
-        }
+.btn-secondary:hover {
+  background: #fdf2f8;
+  border-color: #f9a8d4;
+}
 
-        .btn-danger {
-          background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-          color: white;
-          font-size: 0.82rem;
-          box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
-        }
+.btn-danger {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+  color: white;
+  font-size: 0.82rem;
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
 
-        .btn-danger:hover {
-          background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-        }
+.btn-danger:hover {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
 
-        /* ===================== ANIMATIONS ===================== */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(16px) scale(0.98);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-
-
-          @keyframes float {
-            0% {
-              transform: translateY(0) rotate(0deg);
-              opacity: 0;
-            }
-
-            10% {
-              opacity: 0.4;
-            }
-
-            90% {
-              opacity: 0.3;
-            }
-
-            100% {
-              transform: translateY(-110vh) rotate(25deg);
-              opacity: 0;
-            }
-          }
-
-          .animate-fadeIn {
-            animation: fadeIn 0.45s ease both;
-          }
-
-          .animate-float {
-            animation: float linear infinite;
-          }
-
-/* ===================== NEW ANIMATIONS ===================== */
-
-@keyframes slideIn {
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
+    transform: translateY(16px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.2); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
-  56% { transform: scale(1); }
-}
 
-@keyframes wobble {
-  0%, 100% { transform: rotate(0deg); }
-  15% { transform: rotate(-8deg); }
-  30% { transform: rotate(6deg); }
-  45% { transform: rotate(-4deg); }
-  60% { transform: rotate(3deg); }
-  75% { transform: rotate(-2deg); }
-}
-
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.animate-slideIn {
-  animation: slideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.animate-heartbeat {
-  animation: heartbeat 1.4s ease-in-out infinite;
-}
-
-.animate-wobble {
-  animation: wobble 1.5s ease-in-out infinite;
-}
-
-.animate-spin-slow {
-  animation: spinSlow 8s linear infinite;
-}
-
-/* ===================== NEW ANIMATIONS ===================== */
-
-@keyframes slideIn {
-  from {
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
     opacity: 0;
-    transform: translateY(20px) scale(0.97);
   }
-  to {
+
+  10% {
+    opacity: 0.4;
+  }
+
+  90% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translateY(-110vh) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.45s ease both;
+}
+
+.animate-float {
+  animation: float linear infinite;
+}
+
+/* ===================== MOBILE EFFECTS ANIMATIONS ===================== */
+
+@keyframes rippleHeart {
+  0% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(0.6);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-35px) scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-75px) scale(0.9);
   }
 }
 
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  14% { transform: scale(1.2); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.15); }
-  56% { transform: scale(1); }
+@keyframes shakePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) rotate(-4deg);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.06) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
-@keyframes wobble {
-  0%, 100% { transform: rotate(0deg); }
-  15% { transform: rotate(-8deg); }
-  30% { transform: rotate(6deg); }
-  45% { transform: rotate(-4deg); }
-  60% { transform: rotate(3deg); }
-  75% { transform: rotate(-2deg); }
+.animate-ripple-heart {
+  animation: rippleHeart 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+.animate-shake-pop {
+  animation: shakePop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.animate-slideIn {
-  animation: slideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+/* ===================== MOBILE EFFECTS ANIMATIONS ===================== */
+
+@keyframes rippleHeart {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.6);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-35px) scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-75px) scale(0.9);
+  }
 }
 
-.animate-heartbeat {
-  animation: heartbeat 1.4s ease-in-out infinite;
+@keyframes shakePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) rotate(-4deg);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.06) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
 
-.animate-wobble {
-  animation: wobble 1.5s ease-in-out infinite;
+.animate-ripple-heart {
+  animation: rippleHeart 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.animate-spin-slow {
-  animation: spinSlow 8s linear infinite;
+.animate-shake-pop {
+  animation: shakePop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
