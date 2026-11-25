@@ -55,7 +55,7 @@ function Confetti({ active }: { active: boolean }) {
       opacity: 1,
     }));
     particlesRef.current = [...particlesRef.current, ...newParticles];
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -144,43 +144,77 @@ function Typewriter({ text, speed = 40, className = "" }: { text: string; speed?
 }
 
 // ==================== RUNAWAY BUTTON ====================
+const MAX_MOBILE_JUMPS = 3;
+
 function RunawayBtn({ children, onCaught }: { children: React.ReactNode; onCaught?: () => void }) {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [escaped, setEscaped] = useState(0);
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const [jumpCount, setJumpCount] = useState(0);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
 
   const flee = useCallback(() => {
-    if (!btnRef.current) return;
     const btn = btnRef.current;
-    const rect = btn.getBoundingClientRect();
-    const parentRect = btn.closest(".runaway-container")?.getBoundingClientRect();
-    if (!parentRect) return;
+    const area = areaRef.current;
+    if (!btn || !area) return;
 
-    const maxX = parentRect.width - rect.width;
-    const maxY = parentRect.height - rect.height;
+    const aW = area.clientWidth;
+    const aH = area.clientHeight;
+    const bW = btn.offsetWidth || 220;
+    const bH = btn.offsetHeight || 48;
 
-    const newX = Math.random() * maxX - rect.left + parentRect.left;
-    const newY = Math.random() * maxY - rect.top + parentRect.top;
-
-    setPos({ x: Math.max(-rect.left + parentRect.left, Math.min(maxX - rect.left + parentRect.left, newX)), y: Math.max(-rect.top + parentRect.top, Math.min(maxY - rect.top + parentRect.top, newY)) });
-    setEscaped((e) => e + 1);
+    setPos({
+      x: Math.random() * Math.max(0, aW - bW),
+      y: Math.random() * Math.max(0, aH - bH),
+    });
+    setJumpCount((c) => c + 1);
   }, []);
 
+  const label =
+    jumpCount >= MAX_MOBILE_JUMPS
+      ? "โอเค... ไม่เอาจริงๆ 😮‍💨"
+      : jumpCount >= 2
+        ? "จับไม่ได้หรอก! 😂"
+        : jumpCount >= 1
+          ? "หนีแล้ว! 🏃💨"
+          : children;
+
   return (
-    <button
-      ref={btnRef}
-      onMouseEnter={flee}
-      onFocus={flee}
-      onClick={onCaught}
-      className="btn btn-danger transition-all duration-200"
-      style={{
-        position: "relative",
-        transform: `translate(${pos.x}px, ${pos.y}px)`,
-        transition: "transform 0.15s ease",
-      }}
-    >
-      {escaped > 3 ? "จับไม่ได้หรอก! 😂" : escaped > 1 ? "หนีแล้ว! 🏃💨" : children}
-    </button>
+    <div ref={areaRef} className="relative w-full" style={{ height: "80px" }}>
+      <button
+        ref={btnRef}
+        // Desktop: วิ่งเมื่อ hover (ไม่จำกัด)
+        onMouseEnter={flee}
+        // Mobile: วิ่งสูงสุด 3 ครั้ง ครั้งที่ 4 ผ่านไป onCaught
+        onTouchStart={(e) => {
+          if (jumpCount < MAX_MOBILE_JUMPS) {
+            e.preventDefault(); // บล็อก click ไว้ก่อน
+            flee();
+          }
+          // ถ้า jumpCount >= MAX_MOBILE_JUMPS → ไม่ preventDefault → click ยิง
+        }}
+        onClick={onCaught}
+        className="btn btn-danger"
+        style={
+          pos
+            ? {
+              position: "absolute",
+              left: pos.x,
+              top: pos.y,
+              transition: "left 0.18s ease, top 0.18s ease",
+              whiteSpace: "nowrap",
+            }
+            : {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+            }
+        }
+      >
+        {label}
+      </button>
+    </div>
   );
 }
 
@@ -196,9 +230,8 @@ function PageTransition({ screen }: { screen: Screen }) {
 
   return (
     <div
-      className={`transition-all duration-500 ease-out w-full flex justify-center ${
-        visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
-      }`}
+      className={`transition-all duration-500 ease-out w-full flex justify-center ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
+        }`}
     >
       {/* children inserted by parent */}
     </div>
@@ -321,7 +354,7 @@ function Message1Screen({ onNext }: { onNext: () => void }) {
         setLineIdx((i) => i + 1);
       }, 400);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineIdx]);
 
   return (
@@ -365,7 +398,7 @@ function TypewriterLine({ text, speed, onDone }: { text: string; speed: number; 
       }
     }, speed);
     return () => clearInterval(iv);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text]);
 
   return (
@@ -400,7 +433,7 @@ function ProposeScreen({ onYes, onNo }: { onYes: () => void; onNo: () => void })
           <Typewriter text="ง้อนะอ้วน" speed={80} />
         </h2>
         <p className="text-gray-600 text-lg">คืนดีกันเถอะ 💕</p>
-        <div className="space-y-3 pt-2 runaway-container relative" style={{ minHeight: "120px" }}>
+        <div className="space-y-3 pt-2">
           <Btn onClick={onYes} variant="primary">ได้ 🩷</Btn>
           <RunawayBtn onCaught={onNo}>ไม่...ไม่มีทางหรอก ฝันไปเถอะ 😤</RunawayBtn>
         </div>
